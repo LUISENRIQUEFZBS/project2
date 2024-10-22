@@ -17,8 +17,8 @@ exports.getSignup = async (req, res, next) => {
 exports.isLoggedIn=async(req,res,next)=>{
     if(req.cookies.jwt){
 
-        const usuarios= await Usuario.getAll();
-        
+        let usuarios
+        await Usuario.getAll().then(([filas, dataCampos]) => {usuarios=filas});
         try{
         const token= req.cookies.jwt;
         const decoded = jwt.verify(token, jwt_secret);
@@ -41,7 +41,8 @@ exports.postLogin = async (req, res, next) => {
     if (!(email && password)) {
         return res.status(404).json({ error: "Se requiere todos los campos llenos" });
     }
-    const usuarios= await Usuario.getAll();
+    let usuarios
+    await Usuario.getAll().then(([filas, dataCampos]) => {usuarios=filas});
 
     const user=usuarios.find(x=>x.password==password && x.email==email);
     if(user) {
@@ -75,9 +76,7 @@ exports.postSignup = async (req, res, next) => {
     if(password!=password2){
         return res.status(404).json({ error: "Se requiere que las contraseñas sean iguales" });
     }
-    const usuarios= await Usuario.getAll();
-    const new_user = new Usuario(usuarios.length+1, nombres, apellidos, email, password, false);
+    const new_user = new Usuario(null,nombres, apellidos, email, password, 0);
     new_user.save()
-  
     res.redirect('/')
 }

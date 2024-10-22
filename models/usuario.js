@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const raizDir = require('../utils/path');
+const db = require('../utils/database')
+
 
 const u = path.join(
     raizDir,
@@ -30,19 +32,16 @@ module.exports = class Usuario{
         this.isAdmin=isAdmin;
     }
     save(){
-        getUsuariosFromFile(usuarios => {
-            console.log(usuarios)
-            usuarios.push(this);
-            fs.writeFile(u, JSON.stringify(usuarios), err => {
-              console.log(err);
-            });
-        });
+        return db.execute(
+            'INSERT INTO usuarios (nombres,apellidos,email,password,isadmin) VALUES (?, ?, ?, ?,?)',
+            [this.nombres, this.apellidos, this.email, this.password,this.isAdmin]    
+        );
     }
-    static fetchAll(cb) {
-        getUsuariosFromFile(cb);
+    static fetchAll() {
+        return db.execute('SELECT * FROM usuarios');
     }
     static async getAll() {
-        return JSON.parse(fs.readFileSync(u, `utf-8`));
+        return db.execute('SELECT * FROM usuarios');
     }
 
 }

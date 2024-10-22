@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const db = require('../utils/database')
+
 
 const raizDir = require('../utils/path.js');
 const p = path.join(raizDir, 'data', 'productos.json');
@@ -42,8 +44,11 @@ module.exports = class Producto {
         });
     }
 
-    static fetchAll(cb) {
-        return getProductosFromFile(cb);
+    // static fetchAll() {
+    //     return db.execute('SELECT * FROM productos');
+    // }
+    static fetchAll(ruta) {
+        return ruta!=null? db.execute('SELECT * FROM productos where categoria_id=( select id from categorias where ruta =?)',[ruta]): db.execute('SELECT * FROM productos');
     }
 
     static findById(id, cb) {
