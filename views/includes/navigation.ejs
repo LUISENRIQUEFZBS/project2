@@ -1,0 +1,72 @@
+<header class="main-header">
+    <nav class="main-header__nav">
+        <ul class="main-header__item-list ">
+            <li class="main-header__item__logo box-center_flex">
+                <a href="/">
+                    <div class="logo-container">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/014/018/566/small_2x/samsung-logo-on-transparent-background-free-vector.jpg" alt="Samsung Logo">
+                    </div>
+                </a>
+            </li>            
+            <li class="main-header__item box-center_flex">
+                <a  href="/mobile">
+                    mobile
+                </a>
+            </li>
+            <li class="main-header__item box-center_flex">
+                <a href="/tv_audio">
+                    TV & Audio
+                </a>
+            </li>
+            <li class="main-header__item box-center_flex">
+                <a href="/electrodomesticos">
+                    Electrodomésticos
+                </a>
+            </li>
+            <li class="main-header__item box-center_flex">
+                <a  href="/tecnologia_ai">
+                    Tecnología AI
+                </a>
+            </li>
+            <li class="main-header__item box-center_flex">
+                <a  href="/ventas_especiales">
+                    Ventas especiales
+                </a>
+            </li>
+
+            <li class="main-header__item box-center_flex">
+                <a class="<%= path === '/admin/productos' ? 'active' : '' %>" href="/admin/productos">
+                    Admin Productos
+                </a>
+            </li>
+   
+            <% if (typeof user == 'object' && user) { %>
+                <form class="box-center_flex" action="/usuario/logout" method="POST">
+                    <a  class="box-center_flex " >
+                        <button type="submit" style="background-color:transparent;border:none;font-size:inherit;  cursor:pointer;">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </a>
+                </form>
+            <% } else{ %>  
+                <li class="main-header__item box-center_flex">
+                    <a class="<%= path === '/login' ? 'active' : '' %>" href="/usuario/login">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+                </li>
+            <% } %>
+            <li class="main-header__item box-center_flex">
+                <a href="/carrito">
+                <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+            </li>
+            <li class="main-header__item box-center_flex">
+                <a><i class="fa-solid fa-magnifying-glass"></i></a>
+            </li>
+            <% if (typeof user == 'object' && user){ %>
+                <li class="main-header__item box-center_flex"><%= user.nombres %></li>
+            <% }%> 
+            
+        </ul>
+    </nav>
+</header>

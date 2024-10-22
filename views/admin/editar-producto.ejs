@@ -1,0 +1,85 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/admin.css">
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main class="contenedor-formulario">
+        <section class="informacion">
+            <h1><%= titulo %></h1>
+            <form action="/admin/<% if (modoEdicion) { %>editar-producto<% } else { %>crear-producto<% } %>" method="POST" class="form-control">
+                <!-- Nombre del producto -->
+                 <div class="input-form">
+                     <label for="nombreproducto">Nombre del producto</label>
+                     <input type="text" id="nombreproducto" name="nombreproducto" value="<% if (modoEdicion) { %><%= producto.nombreproducto %><% } %>" required>
+                 </div>
+    
+                <!-- URL de la imagen -->
+                 <div class="input-form">
+                     <label for="urlImagen">URL de la imagen</label>
+                     <input type="text" id="urlImagen" name="urlImagen" value="<% if (modoEdicion) { %><%= producto.urlImagen %><% } %>">
+                 </div>
+    
+                <!-- Precio del producto -->
+                 <div class="input-form">
+                     <label for="precio">Precio</label>
+                     <input type="number" id="precio" name="precio" value="<% if (modoEdicion) { %><%= producto.precio %><% } %>" required>
+                 </div>
+    
+                <!-- Descripción del producto -->
+                 <div class="input-form">
+                     <label for="descripcion">Descripción</label>
+                     <textarea id="descripcion" name="descripcion" required><% if (modoEdicion) { %><%= producto.descripcion %><% } %></textarea>
+                 </div>
+    
+                <!-- Características del producto -->
+
+                <div class="input-form">
+                    <label for="caracteristicas">Características principales</label>
+                    <textarea id="caracteristicas" name="caracteristicas" required><% if (modoEdicion) { %><% if (tienecaracteristicas) { %> <%= producto.caracteristicas.join(", ") %><% } %><% } %></textarea>
+                </div>
+    
+                <!-- Seleccionar categoría -->
+                 <div class="input-form">
+                     <label for="categoria">Categoría</label>
+                     <select id="categoria" name="categoria">
+                         <option value="mobile" <% if (modoEdicion && producto.categoria === 'mobile') { %>selected<% } %>>Mobile</option>
+                         <option value="tv_audio" <% if (modoEdicion && producto.categoria === 'tv_audio') { %>selected<% } %>>TV & Audio</option>
+                         <option value="electrodomesticos" <% if (modoEdicion && producto.categoria === 'electrodomesticos') { %>selected<% } %>>Electrodomésticos</option>
+                         <option value="tecnologia_ai" <% if (modoEdicion && producto.categoria === 'tecnologia_ai') { %>selected<% } %>>Tecnología AI</option>
+                         <option value="ventas_especiales" <% if (modoEdicion && producto.categoria === 'ventas_especiales') { %>selected<% } %>>Ventas Especiales</option>
+                     </select>
+                 </div>
+    
+                <!-- ID del producto oculto si está en modo edición -->
+                <% if (modoEdicion) { %>
+                    <input type="hidden" value="<%= producto.id %>" name="idProducto">
+                <% } %>
+    
+                <!-- Botón de submit -->
+                 <div class="button-div">
+                     <button type="submit" class="button-primary"><% if (modoEdicion) { %>Actualizar producto<% } else { %>Crear producto<% } %></button>
+                 </div>
+            </form>        
+        </section>
+        <aside>
+            <!-- Vista previa de la imagen -->
+            <div class="image-preview">
+                <img id="previewImage" src="<% if (modoEdicion) { %><%= producto.urlImagen %><% } else { %>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVNer1ZryNxWVXojlY9Hoyy1-4DVNAmn7lrg&s<% } %>" alt="Vista previa" />
+            </div>
+        </aside>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+    
+    <script>
+        // Mostrar vista previa de la imagen cuando se ingresa la URL
+        const urlImagenInput = document.getElementById('urlImagen');
+        const previewImage = document.getElementById('previewImage');
+
+        urlImagenInput.addEventListener('input', function() {
+            const imageUrl = urlImagenInput.value;
+            previewImage.src = imageUrl ? imageUrl : '';
+        });
+    </script>
+</body>
