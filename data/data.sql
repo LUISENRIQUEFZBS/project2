@@ -41,7 +41,7 @@ insert into categorias(categoria,ruta) values
 ('Mobile','mobile'),
 ('TV & Audio','tv_audio'),
 ('Electrodomésticos','electrodomesticos'),
-('Tecnología AI','ai'),
+('Tecnología AI','tecnologia_ai'),
 ('Ventas Especiales','ventas_especiales');
 
 insert into productos(nombreproducto,urlimagen,precio,descripcion,categoria_id)
