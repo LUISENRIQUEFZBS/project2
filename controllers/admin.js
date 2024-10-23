@@ -69,7 +69,7 @@ exports.postEditProductos = (req, res, next) => {
         descripcion: req.body.descripcion,
         urlImagen: req.body.urlImagen,
         categoria: req.body.categoria,
-        caracteristicas: req.body.caracteristicas.split(',')
+        caracteristicas: req.body.caracteristicas!=''? req.body.caracteristicas.split(','):null
     };
     // Actualiza el producto
     Producto.update(productoId, updatedData).then(([filas]) => {
