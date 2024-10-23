@@ -77,10 +77,3 @@ values
 12332.23,'test',(select id from categorias where categoria='Mobile')
 );
 
-
-
-
-
-
-
-
