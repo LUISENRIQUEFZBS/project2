@@ -41,7 +41,7 @@ exports.getEditProductos = (req, res, next) => {
     
     const productoId = req.params.id; // Obtiene el ID del producto de los parámetros de la URL
     Producto.findById(productoId).then(([filas]) => {
-        console.log('filas!',filas)
+        console.log('productos!',filas)
         const producto=filas[0];
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
@@ -79,6 +79,7 @@ exports.postEditProductos = (req, res, next) => {
 exports.getEliminarProducto = (req, res) => {
     const idProducto = req.body.idProducto;
     // console.log(idProducto)
-    Producto.deleteById(idProducto);
-    res.redirect('/admin/productos');
+    Producto.deleteById(idProducto).then(([filas]) => {
+        res.redirect('/admin/productos'); // Redirige si la actualización fue exitosa
+    }).catch(err => console.log(err));;
 };

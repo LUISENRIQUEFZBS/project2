@@ -23,7 +23,7 @@
                 <!-- Precio del producto -->
                  <div class="input-form">
                      <label for="precio">Precio</label>
-                     <input type="number" id="precio" name="precio" value="<% if (modoEdicion) { %><%= producto.precio %><% } %>" required>
+                     <input type="number" min="0" max="100000.00" step='0.01' id="precio" name="precio" value="<% if (modoEdicion) { %><%= producto.precio %><% } %>" required>
                  </div>
     
                 <!-- Descripción del producto -->
@@ -43,11 +43,11 @@
                  <div class="input-form">
                      <label for="categoria">Categoría</label>
                      <select id="categoria" name="categoria">
-                         <option value="1" <% if (modoEdicion && producto.categoria === 'mobile') { %>selected<% } %>>Mobile</option>
-                         <option value="2" <% if (modoEdicion && producto.categoria === 'tv_audio') { %>selected<% } %>>TV & Audio</option>
-                         <option value="3" <% if (modoEdicion && producto.categoria === 'electrodomesticos') { %>selected<% } %>>Electrodomésticos</option>
-                         <option value="4" <% if (modoEdicion && producto.categoria === 'tecnologia_ai') { %>selected<% } %>>Tecnología AI</option>
-                         <option value="5" <% if (modoEdicion && producto.categoria === 'ventas_especiales') { %>selected<% } %>>Ventas Especiales</option>
+                         <option value="1" <% if (modoEdicion && +producto.categoria_id === 1) { %>selected<% } %>>Mobile</option>
+                         <option value="2" <% if (modoEdicion && +producto.categoria_id === 2) { %>selected<% } %>>TV & Audio</option>
+                         <option value="3" <% if (modoEdicion && +producto.categoria_id === 3) { %>selected<% } %>>Electrodomésticos</option>
+                         <option value="4" <% if (modoEdicion && +producto.categoria_id === 4) { %>selected<% } %>>Tecnología AI</option>
+                         <option value="5" <% if (modoEdicion && +producto.categoria_id === 5) { %>selected<% } %>>Ventas Especiales</option>
                      </select>
                  </div>
     

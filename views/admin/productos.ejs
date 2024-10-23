@@ -30,11 +30,11 @@
                 <% for (let producto of prods) { %>
                     <article class="card product-item">
                         <div class="card__actions">
-                            <a class="btn-editar" href="/admin/editar-producto/<%= producto.id %>?editar=true" class="btn">
+                            <a class="btn-editar" href="/admin/editar-producto/<%= producto.producto_id %>?editar=true" class="btn">
                                 <i class="fa-solid fa-pen-to-square fa-2x"></i>
                             </a>
                             <form action="/admin/eliminar-producto" method="POST">
-                                <input type="hidden" value="<%= producto.id %>" name="idProducto">
+                                <input type="hidden" value="<%= producto.producto_id %>" name="idProducto">
                                     <button class="btn-eliminar" type="submit">
                                         <i class="fa-solid fa-trash-can fa-2x"></i>
                                     </button>
