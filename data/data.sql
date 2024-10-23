@@ -76,4 +76,3 @@ values
 ('Galaxy A35 5G 256GB','https://shop.samsung.com/latin/pub/media/catalog/product/cache/a69170b4a4f0666a52473c2224ba9220/s/m/sm-a356_3agarantia_2.png',
 12332.23,'test',(select id from categorias where categoria='Mobile')
 );
-
