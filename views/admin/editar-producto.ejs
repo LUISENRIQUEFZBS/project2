@@ -36,7 +36,7 @@
 
                 <div class="input-form">
                     <label for="caracteristicas">Características principales</label>
-                    <textarea id="caracteristicas" name="caracteristicas" required><% if (modoEdicion) { %><% if (tienecaracteristicas) { %> <%= producto.caracteristicas.join(", ") %><% } %><% } %></textarea>
+                    <textarea id="caracteristicas" name="caracteristicas"><% if (modoEdicion){%><% if (tienecaracteristicas){%><%= producto.caracteristicas.join(",") %><%}%><%}%></textarea>
                 </div>
     
                 <!-- Seleccionar categoría -->
@@ -44,7 +44,7 @@
                      <label for="categoria">Categoría</label>
                      <select id="categoria" name="categoria">
                         <% for (let c of categorias) { %>
-                            <option value="<%=c.id%>" <% if (modoEdicion && +producto.categoria_id === c.id) { %>selected<% } %>  ><%= c.categoria %></option>
+                            <option value="<%=c.id%>" <% if (modoEdicion && +producto.categoria_id === c.id) { %>selected<% } %>><%= c.categoria %></option>
                         <% } %>
                        
                      </select>

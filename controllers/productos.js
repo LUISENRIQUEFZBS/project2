@@ -56,11 +56,12 @@ exports.postEliminarProductoCarrito = (req, res) => {
 
 exports.getProducto = (req, res) => {
     const idProducto = req.params.idProducto;
-    Producto.findById(idProducto, (producto) => {
+    Producto.findById(idProducto).then(([filas]) => {
+        const producto=filas[0];
         res.render('tienda/detalle-producto', {
             producto: producto,
             titulo: producto.nombre,
             path: "/"
         })
-    })
+    });
 }

@@ -57,7 +57,7 @@ exports.getEditProductos = async (req, res, next) => {
             modoEdicion: true,
             categorias
         });
-    }).catch(err => console.log(err));;
+    }).catch(err => console.log(err));
 };
 
 // Controlador para guardar los cambios del producto editado
@@ -69,7 +69,7 @@ exports.postEditProductos = (req, res, next) => {
         descripcion: req.body.descripcion,
         urlImagen: req.body.urlImagen,
         categoria: req.body.categoria,
-        caracteristicas: req.body.caracteristicas.split(', ')
+        caracteristicas: req.body.caracteristicas.split(',')
     };
     // Actualiza el producto
     Producto.update(productoId, updatedData).then(([filas]) => {
