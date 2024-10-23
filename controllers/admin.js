@@ -26,7 +26,6 @@ exports.postCrearProducto = (req, res, next) => {
 exports.getProductos = (req, res, next) => {
     let productos;
     Producto.fetchAll().then(([filas, dataCampos])=> {
-        // console.log('Productos obtenidos:', productosObtenidos);
         productos = filas
         res.render('admin/productos', {
             prods: productos, 
@@ -41,12 +40,10 @@ exports.getEditProductos = (req, res, next) => {
     
     const productoId = req.params.id; // Obtiene el ID del producto de los parámetros de la URL
     Producto.findById(productoId).then(([filas]) => {
-        console.log('productos!',filas)
         const producto=filas[0];
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
         }
-        // console.log(producto);
         res.render('admin/editar-producto', {
             titulo: 'Editar Producto',
             path: '/admin/editar-producto',
@@ -60,7 +57,6 @@ exports.getEditProductos = (req, res, next) => {
 // Controlador para guardar los cambios del producto editado
 exports.postEditProductos = (req, res, next) => {
     const productoId = req.body.idProducto; // Obtiene el ID del producto de los parámetros de la URL
-    // console.log(req.body.categoria);
     const updatedData = {
         nombreproducto: req.body.nombreproducto,
         precio: req.body.precio,
@@ -78,7 +74,6 @@ exports.postEditProductos = (req, res, next) => {
 
 exports.getEliminarProducto = (req, res) => {
     const idProducto = req.body.idProducto;
-    // console.log(idProducto)
     Producto.deleteById(idProducto).then(([filas]) => {
         res.redirect('/admin/productos'); // Redirige si la actualización fue exitosa
     }).catch(err => console.log(err));;
