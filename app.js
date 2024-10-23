@@ -15,7 +15,7 @@ const usuarioRouter = require('./routes/usuario')
 const ecommerceRouter = require('./routes/ecommerce')
 const adminRouter = require('./routes/admin');
 
-const db = require('./utils/database')
+// const db = require('./utils/database')
 
 // db.execute('SELECT * FROM usuarios')
 //     .then(resultado => {
