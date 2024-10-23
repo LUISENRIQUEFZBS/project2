@@ -1,26 +1,5 @@
 
-const fs = require('fs');
-const path = require('path');
-
-const raizDir = require('../utils/path');
 const db = require('../utils/database')
-
-
-const u = path.join(
-    raizDir,
-    'data',
-    'usuarios.json'
-  );
-
-const getUsuariosFromFile =   cb => {
-    fs.readFile(u, (err, fileContent) => {
-        if (err) {
-            cb([]);
-        } else {
-            cb(JSON.parse(fileContent));
-        }
-    });
-};
 
 module.exports = class Usuario{
     constructor(id,nombres, apellidos,email,password,isAdmin){

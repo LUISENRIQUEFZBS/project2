@@ -30,65 +30,30 @@ module.exports = class Producto {
     }
 
     save() {
-        getProductosFromFile(productos => {
-            if (!this.id) {
-                // Genera un nuevo ID
-                this.id = (productos.length + 1).toString(); // Incrementa el ID basado en la longitud del array
-            }
-            productos.push(this);
-            fs.writeFile(p, JSON.stringify(productos), (err) => { // Convierte a JSON para guardar
-                if (err) {
-                    console.error('No se pudo guardar el producto.');
-                }
-            });
-        });
+        return db.execute(
+            'INSERT INTO productos (nombreproducto, urlimagen, precio, descripcion) VALUES (?, ?, ?, ?)',
+            [this.nombreproducto, this.urlImagen, this.precio, this.descripcion]
+          );
     }
 
     // static fetchAll() {
     //     return db.execute('SELECT * FROM productos');
     // }
     static fetchAll(ruta) {
-        return ruta!=null? db.execute('SELECT * FROM productos where categoria_id=( select id from categorias where ruta =?)',[ruta]): db.execute('SELECT * FROM productos');
+        return ruta!=null? db.execute('SELECT * FROM productos left join categorias on categorias.id=productos.categoria_id where categoria_id=( select id from categorias where ruta =?)',[ruta]): db.execute('SELECT * FROM productos left join categorias on categorias.id=productos.categoria_id');
     }
 
-    static findById(id, cb) {
-        getProductosFromFile(productos => {
-            const producto = productos.find(prod => prod.id == id);
-            cb(producto);
-        })
+    static findById(id) {
+        return db.execute('SELECT * FROM productos WHERE productos.id = ?', [id]);
     }
 
-    static findById(id, cb) {
-        getProductosFromFile(productos => {
-            const producto = productos.find(p => p.id === id); // Busca el producto por ID
-            cb(producto);
-        });
-    }
-
-    static update(id, updatedData, cb) {
-        getProductosFromFile(productos => {
-            const productoIndex = productos.findIndex(p => p.id === id);
-            if (productoIndex >= 0) {
-                // Si no hay nueva URL de imagen, mantén la existente
-                const productoActual = productos[productoIndex];
-                const updatedProducto = {
-                    ...productoActual,
-                    ...updatedData,
-                    urlImagen: updatedData.urlImagen || productoActual.urlImagen // Mantener la imagen actual si no hay nueva
-                };
-                productos[productoIndex] = updatedProducto; // Actualiza el producto
-                fs.writeFile(p, JSON.stringify(productos), err => {
-                    if (err) {
-                        console.error('No se pudo guardar el producto.');
-                        cb(null);
-                    } else {
-                        cb(updatedProducto);
-                    }
-                });
-            } else {
-                cb(null); // Producto no encontrado
-            }
-        });
+    static update(id, updatedData) {
+        return db.execute(
+            'UPDATE  productos SET nombreproducto=? , precio=?,descripcion=?, urlimagen=?,categoria_id=?, caracteristicas=? WHERE id=?',
+            [updatedData.nombreproducto, updatedData.precio,updatedData.descripcion,updatedData.urlImagen,  updatedData.categoria, updatedData.caracteristicas, id]
+          );
+       
+       
     }
 
     static deleteById(id) {

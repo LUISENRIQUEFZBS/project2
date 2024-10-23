@@ -17,7 +17,7 @@
                 <!-- URL de la imagen -->
                  <div class="input-form">
                      <label for="urlImagen">URL de la imagen</label>
-                     <input type="text" id="urlImagen" name="urlImagen" value="<% if (modoEdicion) { %><%= producto.urlImagen %><% } %>">
+                     <input type="text" id="urlImagen" name="urlImagen" value="<% if (modoEdicion) { %><%= producto.urlimagen %><% } %>">
                  </div>
     
                 <!-- Precio del producto -->
@@ -43,11 +43,11 @@
                  <div class="input-form">
                      <label for="categoria">Categoría</label>
                      <select id="categoria" name="categoria">
-                         <option value="mobile" <% if (modoEdicion && producto.categoria === 'mobile') { %>selected<% } %>>Mobile</option>
-                         <option value="tv_audio" <% if (modoEdicion && producto.categoria === 'tv_audio') { %>selected<% } %>>TV & Audio</option>
-                         <option value="electrodomesticos" <% if (modoEdicion && producto.categoria === 'electrodomesticos') { %>selected<% } %>>Electrodomésticos</option>
-                         <option value="tecnologia_ai" <% if (modoEdicion && producto.categoria === 'tecnologia_ai') { %>selected<% } %>>Tecnología AI</option>
-                         <option value="ventas_especiales" <% if (modoEdicion && producto.categoria === 'ventas_especiales') { %>selected<% } %>>Ventas Especiales</option>
+                         <option value="1" <% if (modoEdicion && producto.categoria === 'mobile') { %>selected<% } %>>Mobile</option>
+                         <option value="2" <% if (modoEdicion && producto.categoria === 'tv_audio') { %>selected<% } %>>TV & Audio</option>
+                         <option value="3" <% if (modoEdicion && producto.categoria === 'electrodomesticos') { %>selected<% } %>>Electrodomésticos</option>
+                         <option value="4" <% if (modoEdicion && producto.categoria === 'tecnologia_ai') { %>selected<% } %>>Tecnología AI</option>
+                         <option value="5" <% if (modoEdicion && producto.categoria === 'ventas_especiales') { %>selected<% } %>>Ventas Especiales</option>
                      </select>
                  </div>
     
@@ -65,7 +65,7 @@
         <aside>
             <!-- Vista previa de la imagen -->
             <div class="image-preview">
-                <img id="previewImage" src="<% if (modoEdicion) { %><%= producto.urlImagen %><% } else { %>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVNer1ZryNxWVXojlY9Hoyy1-4DVNAmn7lrg&s<% } %>" alt="Vista previa" />
+                <img id="previewImage" src="<% if (modoEdicion) { %><%= producto.urlimagen %><% } else { %>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVNer1ZryNxWVXojlY9Hoyy1-4DVNAmn7lrg&s<% } %>" alt="Vista previa" />
             </div>
         </aside>
     </main>

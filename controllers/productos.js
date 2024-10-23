@@ -3,17 +3,9 @@ const Carrito = require('../models/carrito');
 const path = require('../utils/path');
 
 exports.getProductos = (req, res) => {
-    console.log(req.params);
-    const categoria_ruta = req.params.categoria_ruta; // Obtener la categoría desde los parámetros de la ruta
- 
+    const categoria_ruta = req.params.categoria_ruta; // Obtener la categoría desde los parámetros de la ruta 
     Producto.fetchAll(categoria_ruta).then(([filas, dataCampos]) => {
         const productos=filas;
-
-        // if (categoria_ruta) {
-        //     productosFiltrados = productos.filter(producto => producto.categoria === categoria_ruta);
-        // }
-        
-        // const titulo = categoriasDisponibles[categoria_ruta] || "Página principal de la Tienda";
         const titulo='Página principal de la Tienda'
         res.render('tienda/index', {
             prods: productos,

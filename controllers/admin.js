@@ -25,9 +25,9 @@ exports.postCrearProducto = (req, res, next) => {
 
 exports.getProductos = (req, res, next) => {
     let productos;
-    Producto.fetchAll(productosObtenidos => {
+    Producto.fetchAll().then(([filas, dataCampos])=> {
         // console.log('Productos obtenidos:', productosObtenidos);
-        productos = productosObtenidos
+        productos = filas
         res.render('admin/productos', {
             prods: productos, 
             titulo: 'Administracion de Productos', 
@@ -39,9 +39,10 @@ exports.getProductos = (req, res, next) => {
 // Controlador para obtener el producto a editar
 exports.getEditProductos = (req, res, next) => {
     
-    const modoEdicion = req.query.editar;
     const productoId = req.params.id; // Obtiene el ID del producto de los parámetros de la URL
-    Producto.findById(productoId, producto => {
+    Producto.findById(productoId).then(([filas]) => {
+        console.log('filas!',filas)
+        const producto=filas[0];
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
         }
@@ -53,7 +54,7 @@ exports.getEditProductos = (req, res, next) => {
             tienecaracteristicas: (producto.caracteristicas != null) ? true : false,
             modoEdicion: true
         });
-    });
+    }).catch(err => console.log(err));;
 };
 
 // Controlador para guardar los cambios del producto editado
@@ -68,16 +69,11 @@ exports.postEditProductos = (req, res, next) => {
         categoria: req.body.categoria,
         caracteristicas: req.body.caracteristicas.split(', ')
     };
-
     // Actualiza el producto
-    Producto.update(productoId, updatedData, (result) => {
-        if (result) {
-            res.redirect('/admin/productos'); // Redirige si la actualización fue exitosa
-        } else {
-            console.error('Producto no encontrado en la actualización.'); // Mensaje de depuración
-            res.status(404).send('Producto no encontrado');
-        }
-    });
+    Producto.update(productoId, updatedData).then(([filas]) => {
+        res.redirect('/admin/productos'); // Redirige si la actualización fue exitosa
+    }).catch(err => console.log(err));;
+
 };
 
 exports.getEliminarProducto = (req, res) => {
