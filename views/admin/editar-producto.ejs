@@ -43,11 +43,10 @@
                  <div class="input-form">
                      <label for="categoria">Categoría</label>
                      <select id="categoria" name="categoria">
-                         <option value="1" <% if (modoEdicion && +producto.categoria_id === 1) { %>selected<% } %>>Mobile</option>
-                         <option value="2" <% if (modoEdicion && +producto.categoria_id === 2) { %>selected<% } %>>TV & Audio</option>
-                         <option value="3" <% if (modoEdicion && +producto.categoria_id === 3) { %>selected<% } %>>Electrodomésticos</option>
-                         <option value="4" <% if (modoEdicion && +producto.categoria_id === 4) { %>selected<% } %>>Tecnología AI</option>
-                         <option value="5" <% if (modoEdicion && +producto.categoria_id === 5) { %>selected<% } %>>Ventas Especiales</option>
+                        <% for (let c of categorias) { %>
+                            <option value="<%=c.id%>" <% if (modoEdicion && +producto.categoria_id === c.id) { %>selected<% } %>  ><%= c.categoria %></option>
+                        <% } %>
+                       
                      </select>
                  </div>
     

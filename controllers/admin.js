@@ -1,11 +1,15 @@
 const Producto = require('../models/producto');
 
-exports.getCrearProducto = (req, res, next) => {
+exports.getCrearProducto = async (req, res, next) => {
+
+    const categorias=await Producto.getCategorias().then(([filas]) => {return filas})
+    
     res.render('admin/editar-producto', { 
         titulo: 'Crear Producto', 
         path: '/admin/crear-producto',
         tienecaracteristicas: false,
-        modoEdicion: false
+        modoEdicion: false,
+        categorias
     });
 }
 
@@ -15,9 +19,9 @@ exports.postCrearProducto = (req, res, next) => {
     const precio = req.body.precio;
     const descripcion = req.body.descripcion;
     const caracteristicas = req.body.caracteristicas.split(', ');
-    const categoria = req.body.categoria;  // Capturando la categoría
+    const categoria_id = req.body.categoria;  // Capturando la categoría
 
-    const producto = new Producto(null, nombreproducto, urlImagen, precio, descripcion, caracteristicas, categoria);
+    const producto = new Producto(null, nombreproducto, urlImagen, precio, descripcion, caracteristicas, categoria_id);
 
     producto.save();
     res.redirect('/admin/productos');
@@ -36,10 +40,11 @@ exports.getProductos = (req, res, next) => {
 }
 
 // Controlador para obtener el producto a editar
-exports.getEditProductos = (req, res, next) => {
-    
+exports.getEditProductos = async (req, res, next) => {
+    const categorias=await Producto.getCategorias().then(([filas]) => {return filas})
     const productoId = req.params.id; // Obtiene el ID del producto de los parámetros de la URL
     Producto.findById(productoId).then(([filas]) => {
+        
         const producto=filas[0];
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
@@ -49,7 +54,8 @@ exports.getEditProductos = (req, res, next) => {
             path: '/admin/editar-producto',
             producto: producto, // Pasar el producto a la vista
             tienecaracteristicas: (producto.caracteristicas != null) ? true : false,
-            modoEdicion: true
+            modoEdicion: true,
+            categorias
         });
     }).catch(err => console.log(err));;
 };
