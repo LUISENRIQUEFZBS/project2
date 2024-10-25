@@ -7,4 +7,13 @@ const pool = mysql.createPool({
     password: '12345678'
 });
 
-module.exports = pool.promise();
+const { MongoClient } = require("mongodb");
+
+// Replace the uri string with your connection string.
+const uri = process.env.DB_URI;
+
+const client = new MongoClient(uri);
+const database = client.db('samsung');
+
+
+module.exports = database;

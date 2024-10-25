@@ -1,7 +1,7 @@
 
 const db = require('../utils/database')
-
-module.exports = class Producto {
+const productos = db.collection('productos');
+class Producto {
     constructor(id, nombreproducto, urlImagen, precio, descripcion, caracteristicas, categoria_id) {
         this.id = id;
         this.nombreproducto = nombreproducto;
@@ -19,13 +19,20 @@ module.exports = class Producto {
           );
     }
 
-    static fetchAll(ruta) {
-        return ruta!=null? db.execute('SELECT *,productos.id as producto_id  FROM productos left join categorias on categorias.id=productos.categoria_id where categoria_id=( select id from categorias where ruta =?)',[ruta]): 
-        db.execute('SELECT *,productos.id as producto_id FROM productos left join categorias on categorias.id=productos.categoria_id');
+    static async fetchAll(ruta) {
+       console.log('---producto-fetchAll');
+        return await productos.find().toArray();
+        // return ruta!=null? db.execute('SELECT *,productos.id as producto_id  FROM productos left join categorias on categorias.id=productos.categoria_id where categoria_id=( select id from categorias where ruta =?)',[ruta]): 
+        // db.execute('SELECT *,productos.id as producto_id FROM productos left join categorias on categorias.id=productos.categoria_id');
     }
 
-    static findById(id) {
-        return db.execute('SELECT * FROM productos WHERE productos.id = ?', [id]);
+    static async findById(id) {
+        console.log('---producto-findById');
+        console.log(id);
+        const producto = await productos.findOne({id:id});
+        console.log(producto);
+        return producto;
+        // return db.execute('SELECT * FROM productos WHERE productos.id = ?', [id]);
     }
 
     static getCategorias() {
@@ -42,3 +49,4 @@ module.exports = class Producto {
         return db.execute('DELETE FROM productos WHERE productos.id = ?', [id]);
     }    
 }
+module.exports=Producto;

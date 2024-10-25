@@ -3,9 +3,10 @@ const Carrito = require('../models/carrito');
 const path = require('../utils/path');
 
 exports.getProductos = (req, res) => {
+    console.log('getProductos');
     const categoria_ruta = req.params.categoria_ruta; // Obtener la categoría desde los parámetros de la ruta 
-    Producto.fetchAll(categoria_ruta).then(([filas, dataCampos]) => {
-        const productos=filas;
+    Producto.fetchAll(categoria_ruta).then(data => {
+        const productos= data;
         const titulo='Página principal de la Tienda'
         res.render('tienda/index', {
             prods: productos,
@@ -55,9 +56,9 @@ exports.postEliminarProductoCarrito = (req, res) => {
 };
 
 exports.getProducto = (req, res) => {
-    const idProducto = req.params.idProducto;
-    Producto.findById(idProducto).then(([filas]) => {
-        const producto=filas[0];
+    console.log('getProducto');
+    const idProducto = Number(req.params.idProducto);
+    Producto.findById(idProducto).then((producto) => {
         res.render('tienda/detalle-producto', {
             producto: producto,
             titulo: producto.nombre,
