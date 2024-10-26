@@ -28,6 +28,9 @@ const adminRouter = require('./routes/admin');
 
 const app = express();
 
+app.get("/favicon.ico", function (req, res) {
+    res.sendStatus(204);
+  });
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
