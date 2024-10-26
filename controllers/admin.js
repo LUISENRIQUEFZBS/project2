@@ -22,7 +22,7 @@ exports.postCrearProducto = async (req, res, next) => {
   const precio = Number(req.body.precio);
   const descripcion = req.body.descripcion;
   const caracteristicas = req.body.caracteristicas.split(", ");
-  const categoria_id = Number(req.body.categoria); // Capturando la categoría
+  const categoria_id = req.body.categoria; // Capturando la categoría
 
   const producto = new Producto(
     null,
@@ -61,7 +61,7 @@ exports.getEditProductos = async (req, res, next) => {
 
   try {
     const categorias = await Producto.getCategorias();
-    const productoId = Number(req.params.id); // Obtiene el ID del producto de los parámetros de la URL
+    const productoId = req.params.id; // Obtiene el ID del producto de los parámetros de la URL
     const producto = await Producto.findById(productoId);
 
     if (!producto) {
@@ -83,7 +83,7 @@ exports.getEditProductos = async (req, res, next) => {
 
 // Controlador para guardar los cambios del producto editado
 exports.postEditProductos = async (req, res, next) => {
-  const productoId = Number(req.body.idProducto); // Obtiene el ID del producto de los parámetros de la URL
+  const productoId = req.body.idProducto; // Obtiene el ID del producto de los parámetros de la URL
   const updatedData = {
     nombreproducto: req.body.nombreproducto,
     precio: Number(req.body.precio),
@@ -106,7 +106,7 @@ exports.postEditProductos = async (req, res, next) => {
 };
 
 exports.getEliminarProducto = async (req, res) => {
-  const idProducto = Number(req.body.idProducto);
+  const idProducto = req.body.idProducto;
   try {
     await Producto.deleteById(idProducto);
     res.redirect("/admin/productos"); // Redirige si la actualización fue exitosa

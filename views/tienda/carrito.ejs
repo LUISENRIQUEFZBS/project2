@@ -10,7 +10,7 @@
                     <li>
                         <p><%= p.nombreproducto %> (<%= p.cantidad %>)</p>
                         <form action="/eliminar-producto-carrito" method="POST">
-                            <input type="hidden" value="<%= p.dataProducto.id %>" name="idProducto">
+                            <input type="hidden" value="<%= p.dataProducto._id %>" name="idProducto">
                             <button class="btn" type="submit">Eliminar</button>
                         </form>
                     </li>

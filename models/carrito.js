@@ -7,13 +7,15 @@ module.exports = class Carrito {
     const usuario = await Usuario.findById(userId);
     const carrito = usuario.carrito || [];
 
-    const productoYaAgregado = carrito.find((prod) => prod.id === productId);
+    const productoYaAgregado = carrito.find((prod) =>
+      prod._id.equals(productId)
+    );
 
     if (productoYaAgregado) {
       productoYaAgregado.cantidad += 1;
     } else {
       carrito.push({
-        id: productId,
+        _id: productId,
         precio: precio,
         nombreproducto: nombreproducto,
         cantidad: 1,
@@ -30,7 +32,9 @@ module.exports = class Carrito {
     const usuario = await Usuario.findById(userId);
     const carrito = usuario.carrito || [];
 
-    const productoIndex = carrito.findIndex((prod) => prod.id === productId);
+    const productoIndex = carrito.findIndex((prod) =>
+      prod._id.equals(productId)
+    );
 
     if (productoIndex >= 0) {
       carrito.splice(productoIndex, 1);

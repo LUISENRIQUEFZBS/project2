@@ -1,4 +1,7 @@
+const { ObjectId } = require("mongodb");
+
 const db = require("../utils/database");
+
 const productosCollection = db.collection("productos");
 const categoriasCollection = db.collection("categorias");
 
@@ -38,20 +41,18 @@ class Producto {
     console.log("[models/producto.js > fetchAll]");
     let result = [];
     if (ruta) {
-      const categoria = await db
-        .collection("categorias")
-        .findOne({ ruta: ruta });
+      const categoria = await categoriasCollection.findOne({ ruta: ruta });
       result = productosCollection
-        .find({ categoria_id: categoria.id })
+        .find({ categoria_id: categoria._id })
         .toArray();
     } else {
-      result = productosCollection.find().toArray();
+      result = await productosCollection.find().toArray();
     }
     return result;
   }
 
   static async findById(id) {
-    const result = await productosCollection.findOne({ id: id });
+    const result = await productosCollection.findOne({ _id: new ObjectId(id) });
     return result;
   }
 
@@ -62,7 +63,7 @@ class Producto {
 
   static async update(id, updatedData) {
     const result = await productosCollection.updateOne(
-      { id: id },
+      { _id: new ObjectId(id) },
       {
         $set: {
           nombreproducto: updatedData.nombreproducto,
@@ -79,9 +80,9 @@ class Producto {
 
   static async deleteById(id) {
     console.log("[models/producto.js > deleteById]");
-    console.log(id);
-    const result = await productosCollection.deleteOne({ id: id });
-    console.log(result);
+    const result = await productosCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     return result;
   }
 }

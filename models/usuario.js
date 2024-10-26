@@ -1,3 +1,5 @@
+const { ObjectId } = require("mongodb");
+
 const db = require("../utils/database");
 const usuarios = db.collection("usuarios");
 
@@ -26,7 +28,7 @@ module.exports = class Usuario {
   static async updateCarrito(userId, carrito) {
     console.log("[models/usuario.js > updateCarrito]");
     const result = await usuarios.updateOne(
-      { id: userId },
+      { _id: userId },
       { $set: { carrito: carrito } }
     );
     return result;
@@ -34,7 +36,7 @@ module.exports = class Usuario {
 
   static async findById(id) {
     console.log("[models/usuario.js > findById]");
-    const user = await usuarios.findOne({ id: id });
+    const user = await usuarios.findOne({ _id: new ObjectId(id) });
     return user;
   }
 

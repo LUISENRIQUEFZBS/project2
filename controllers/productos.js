@@ -1,24 +1,21 @@
 const Producto = require("../models/producto");
 const Carrito = require("../models/carrito");
-const path = require("../utils/path");
 
-exports.getProductos = (req, res) => {
-  console.log("[controllers/producto.js > getProductos]");
+exports.getProductos = async (req, res) => {
   const categoria_ruta = req.params.categoria_ruta; // Obtener la categoría desde los parámetros de la ruta
-  Producto.fetchAll(categoria_ruta).then((data) => {
-    const productos = data;
-    const titulo = "Página principal de la Tienda";
-    res.render("tienda/index", {
-      prods: productos,
-      titulo: titulo,
-      path: `/${categoria_ruta || ""}`,
-    });
+  const productos = await Producto.fetchAll(categoria_ruta);
+  const titulo = "Página principal de la Tienda";
+  res.render("tienda/index", {
+    prods: productos,
+    titulo: titulo,
+    path: `/${categoria_ruta || ""}`,
   });
 };
 
 exports.getCarrito = async (req, res, next) => {
+  console.log("[controllers/productos.js > getCarrito]");
   const user = res.locals.user;
-  const userId = user.id;
+  const userId = user._id;
 
   const carrito = await Carrito.getCarrito(userId);
 
@@ -27,7 +24,9 @@ exports.getCarrito = async (req, res, next) => {
   const productosCarrito = [];
   if (carrito) {
     for (producto of productos) {
-      const productoEnCarrito = carrito.find((prod) => prod.id === producto.id);
+      const productoEnCarrito = carrito.find((prod) =>
+        prod._id.equals(producto._id)
+      );
       if (productoEnCarrito) {
         productosCarrito.push({
           dataProducto: producto,
@@ -37,6 +36,7 @@ exports.getCarrito = async (req, res, next) => {
       }
     }
   }
+
   res.render("tienda/carrito", {
     titulo: "Mi carrito",
     path: "/carrito",
@@ -45,13 +45,13 @@ exports.getCarrito = async (req, res, next) => {
 };
 
 exports.postCarrito = async (req, res) => {
-  console.log("[controllers/producto.js > postCarrito]");
+  console.log("[controllers/productos.js > postCarrito]");
   const user = res.locals.user;
-  const idProducto = Number(req.body.idProducto);
+  const idProducto = req.body.idProducto;
   const producto = await Producto.findById(idProducto);
-  Carrito.agregarProducto(
-    user.id,
-    producto.id,
+  await Carrito.agregarProducto(
+    user._id,
+    producto._id,
     producto.precio,
     producto.nombreproducto
   );
@@ -59,15 +59,15 @@ exports.postCarrito = async (req, res) => {
 };
 
 exports.postEliminarProductoCarrito = async (req, res) => {
-  console.log("[controllers/producto.js > postEliminarProductoCarrito]");
+  console.log("[controllers/productos.js > postEliminarProductoCarrito]");
   const user = res.locals.user;
-  const idProducto = Number(req.body.idProducto);
-  Carrito.eliminarProducto(user.id, idProducto);
+  const idProducto = req.body.idProducto;
+  await Carrito.eliminarProducto(user._id, idProducto);
   res.redirect("/carrito");
 };
 
 exports.getProducto = (req, res) => {
-  const idProducto = Number(req.params.idProducto);
+  const idProducto = req.params.idProducto;
   Producto.findById(idProducto).then((producto) => {
     res.render("tienda/detalle-producto", {
       producto: producto,

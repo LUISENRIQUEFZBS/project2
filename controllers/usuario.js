@@ -1,9 +1,6 @@
+const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 
-// para usar talvez un "npm install jsonwebtoken" en commandos
-const jwt = require("jsonwebtoken");
-
-// const usuarios = [{id:'1', nombres:'Luis Enrique',apellidos:'Fernandez Bardales' ,email:'luis@gmail.com' ,password:'1234'}];
 const jwt_secret = "grupo-4";
 
 exports.getLogin = async (req, res, next) => {
@@ -20,6 +17,7 @@ exports.getSignup = async (req, res, next) => {
 };
 
 exports.isLoggedIn = async (req, res, next) => {
+  console.log("[controllers/usuario.js > isLoggedIn]");
   if (req.cookies.jwt) {
     try {
       const token = req.cookies.jwt;
@@ -39,6 +37,7 @@ exports.isLoggedIn = async (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
+  console.log("[controllers/usuario.js > postLogin]");
   const { email, password } = req.body;
   if (!(email && password)) {
     return res
@@ -46,22 +45,22 @@ exports.postLogin = async (req, res, next) => {
       .json({ error: "Se requiere todos los campos llenos" });
   }
 
-  await Usuario.findByEmail(email).then((user) => {
-    if (user && user.password == password) {
-      const token = jwt.sign({ id: user.id }, jwt_secret, {
-        expiresIn: "120d",
-      });
-      const cookieOptions = {
-        expires: new Date(Date.now() + 86400000), // Cookie expira en un dia
-        httpOnly: true,
-      };
-      res.cookie(`jwt`, token, cookieOptions);
-      // res.status(200).json({token,data:{user}})
-      res.redirect("/");
-    } else {
-      return res.status(400).json({ error: "usuario no encontrado" });
-    }
-  });
+  const user = await Usuario.findByEmail(email);
+
+  if (user && user.password == password) {
+    const token = jwt.sign({ id: user._id }, jwt_secret, {
+      expiresIn: "120d",
+    });
+    const cookieOptions = {
+      expires: new Date(Date.now() + 86400000), // Cookie expira en un dia
+      httpOnly: true,
+    };
+    res.cookie(`jwt`, token, cookieOptions);
+    // res.status(200).json({token,data:{user}})
+    res.redirect("/");
+  } else {
+    return res.status(400).json({ error: "usuario no encontrado" });
+  }
 };
 
 exports.postLogout = async (req, res, next) => {
