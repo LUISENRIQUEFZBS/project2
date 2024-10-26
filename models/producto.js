@@ -79,7 +79,9 @@ class Producto {
 
   static async deleteById(id) {
     console.log("[models/producto.js > deleteById]");
+    console.log(id);
     const result = await productosCollection.deleteOne({ id: id });
+    console.log(result);
     return result;
   }
 }

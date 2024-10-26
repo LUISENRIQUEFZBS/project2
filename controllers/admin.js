@@ -86,7 +86,7 @@ exports.postEditProductos = async (req, res, next) => {
   const productoId = Number(req.body.idProducto); // Obtiene el ID del producto de los parámetros de la URL
   const updatedData = {
     nombreproducto: req.body.nombreproducto,
-    precio: req.body.precio,
+    precio: Number(req.body.precio),
     descripcion: req.body.descripcion,
     urlImagen: req.body.urlImagen,
     categoria: req.body.categoria,
