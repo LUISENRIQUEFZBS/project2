@@ -1,10 +1,10 @@
-const mysql = require('mysql2');
+const { MongoClient } = require("mongodb");
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'nodejs',
-    password: '12345678'
-});
+// Replace the uri string with your connection string.
+const uri = 'mongodb+srv://santaaparicioc:Incorrect@cluster0.9o6gj.mongodb.net/';
 
-module.exports = pool.promise();
+const client = new MongoClient(uri);
+const database = client.db('samsung');
+
+
+module.exports = database;

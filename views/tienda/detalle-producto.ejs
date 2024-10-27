@@ -8,7 +8,7 @@
                 <h1><%= producto.nombreproducto %></h1>
             </div>
             <div class="product-image">
-                <img src="<%= producto.urlimagen %>" alt="<%= producto.nombreproducto %>" />
+                <img src="<%= producto.urlImagen %>" alt="<%= producto.nombreproducto %>" />
             </div>
             <div class="product-info">            
                 <h2 class="price">$<%= producto.precio %></h2>
@@ -26,7 +26,7 @@
                 </div>
                 <form action="/carrito" method="post">
                     <button class = "btn" type="submit">Agregar al carrito</button>
-                    <input type = "hidden" name="idProducto" value="<%= producto.id %>">
+                    <input type = "hidden" name="idProducto" value="<%= producto._id %>">
                 </form>
             </div>
         </div>

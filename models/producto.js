@@ -1,44 +1,89 @@
+const { ObjectId } = require("mongodb");
 
-const db = require('../utils/database')
+const db = require("../utils/database");
 
-module.exports = class Producto {
-    constructor(id, nombreproducto, urlImagen, precio, descripcion, caracteristicas, categoria_id) {
-        this.id = id;
-        this.nombreproducto = nombreproducto;
-        this.urlImagen = urlImagen;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.caracteristicas = caracteristicas;
-        this.categoria_id = categoria_id;
+const productosCollection = db.collection("productos");
+const categoriasCollection = db.collection("categorias");
+
+class Producto {
+  constructor(
+    id,
+    nombreproducto,
+    urlImagen,
+    precio,
+    descripcion,
+    caracteristicas,
+    categoria_id
+  ) {
+    this.id = id;
+    this.nombreproducto = nombreproducto;
+    this.urlImagen = urlImagen;
+    this.precio = precio;
+    this.descripcion = descripcion;
+    this.caracteristicas = caracteristicas;
+    this.categoria_id = categoria_id;
+  }
+
+  async save() {
+    console.log("[models/producto.js > save]");
+    const producto = {
+      nombreproducto: this.nombreproducto,
+      urlImagen: this.urlImagen,
+      precio: this.precio,
+      descripcion: this.descripcion,
+      caracteristicas: this.caracteristicas,
+      categoria_id: this.categoria_id,
+    };
+    return await productosCollection.insertOne(producto);
+  }
+
+  static async fetchAll(ruta) {
+    console.log("[models/producto.js > fetchAll]");
+    let result = [];
+    if (ruta) {
+      const categoria = await categoriasCollection.findOne({ ruta: ruta });
+      result = productosCollection
+        .find({ categoria_id: categoria._id })
+        .toArray();
+    } else {
+      result = await productosCollection.find().toArray();
     }
+    return result;
+  }
 
-    save() {
-        return db.execute(
-            'INSERT INTO productos (nombreproducto, urlimagen, precio, descripcion, caracteristicas, categoria_id) VALUES (?, ?, ?, ?, ?, ?)',
-            [this.nombreproducto, this.urlImagen, this.precio, this.descripcion,this.caracteristicas, this.categoria_id]
-          );
-    }
+  static async findById(id) {
+    const result = await productosCollection.findOne({ _id: new ObjectId(id) });
+    return result;
+  }
 
-    static fetchAll(ruta) {
-        return ruta!=null? db.execute('SELECT *,productos.id as producto_id  FROM productos left join categorias on categorias.id=productos.categoria_id where categoria_id=( select id from categorias where ruta =?)',[ruta]): 
-        db.execute('SELECT *,productos.id as producto_id FROM productos left join categorias on categorias.id=productos.categoria_id');
-    }
+  static async getCategorias() {
+    const result = await categoriasCollection.find().toArray();
+    return result;
+  }
 
-    static findById(id) {
-        return db.execute('SELECT * FROM productos WHERE productos.id = ?', [id]);
-    }
+  static async update(id, updatedData) {
+    const result = await productosCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          nombreproducto: updatedData.nombreproducto,
+          urlImagen: updatedData.urlImagen,
+          precio: updatedData.precio,
+          descripcion: updatedData.descripcion,
+          caracteristicas: updatedData.caracteristicas,
+          categoria_id: updatedData.categoria_id,
+        },
+      }
+    );
+    return result;
+  }
 
-    static getCategorias() {
-        return db.execute('SELECT * FROM categorias');
-    }
-
-    static update(id, updatedData) {
-        return db.execute(
-            'UPDATE  productos SET nombreproducto=? , precio=?,descripcion=?, urlimagen=?,categoria_id=?, caracteristicas=? WHERE id=?',
-            [updatedData.nombreproducto, updatedData.precio,updatedData.descripcion,updatedData.urlImagen,  updatedData.categoria, updatedData.caracteristicas, id]
-          );
-    }
-    static deleteById(id) {
-        return db.execute('DELETE FROM productos WHERE productos.id = ?', [id]);
-    }    
+  static async deleteById(id) {
+    console.log("[models/producto.js > deleteById]");
+    const result = await productosCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    return result;
+  }
 }
+module.exports = Producto;

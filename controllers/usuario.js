@@ -1,82 +1,92 @@
+const jwt = require("jsonwebtoken");
+const Usuario = require("../models/usuario");
 
-const Usuario = require('../models/usuario');
-
-// para usar talvez un "npm install jsonwebtoken" en commandos
-const jwt= require('jsonwebtoken');
-
-// const usuarios = [{id:'1', nombres:'Luis Enrique',apellidos:'Fernandez Bardales' ,email:'luis@gmail.com' ,password:'1234'}];
-const jwt_secret='grupo-4'
+const jwt_secret = "grupo-4";
 
 exports.getLogin = async (req, res, next) => {
-    res.render('login-usuario', { titulo: 'Inicio de sesión del cliente', path: '/' });
-}
+  res.render("login-usuario", {
+    titulo: "Inicio de sesión del cliente",
+    path: "/",
+  });
+};
 exports.getSignup = async (req, res, next) => {
-    res.render('signup-usuario', { titulo: 'Creación de nueva cuenta', path: '/' });
-}
+  res.render("signup-usuario", {
+    titulo: "Creación de nueva cuenta",
+    path: "/",
+  });
+};
 
-exports.isLoggedIn=async(req,res,next)=>{
-    if(req.cookies.jwt){
-
-        let usuarios
-        await Usuario.getAll().then(([filas, dataCampos]) => {usuarios=filas});
-        try{
-        const token= req.cookies.jwt;
-        const decoded = jwt.verify(token, jwt_secret);
-            
-        const user=usuarios.find(x=>x.id==decoded.id);
-        if (user) {
-            const currentUser = user;
-            res.locals.user = currentUser;
-            return next();
-        }
+exports.isLoggedIn = async (req, res, next) => {
+  console.log("[controllers/usuario.js > isLoggedIn]");
+  if (req.cookies.jwt) {
+    try {
+      const token = req.cookies.jwt;
+      const decoded = jwt.verify(token, jwt_secret);
+      const user = await Usuario.findById(decoded.id);
+      if (user) {
+        const currentUser = user;
+        res.locals.user = currentUser;
         return next();
-        } catch(err){
-            return next()
-        }
+      }
+      return next();
+    } catch (err) {
+      return next();
     }
-    return next();
-}
-exports.postLogin = async (req, res, next) => {
-    const {email,password}=req.body;
-    if (!(email && password)) {
-        return res.status(404).json({ error: "Se requiere todos los campos llenos" });
-    }
-    let usuarios
-    await Usuario.getAll().then(([filas, dataCampos]) => {usuarios=filas});
+  }
+  return next();
+};
 
-    const user=usuarios.find(x=>x.password==password && x.email==email);
-    if(user) {
-        const token= jwt.sign({id: user.id},jwt_secret,{expiresIn: "120d"})
-        const cookieOptions={
-            expires: new Date(Date.now() + 86400000), // Cookie expira en un dia
-            httpOnly: true,
-        }
-        res.cookie(`jwt`, token, cookieOptions);
-        // res.status(200).json({token,data:{user}})
-        res.redirect('/')
-    }
-    else{
-        return res.status(400).json({ error: "usuario no encontrado" });
-    }
-}
+exports.postLogin = async (req, res, next) => {
+  console.log("[controllers/usuario.js > postLogin]");
+  const { email, password } = req.body;
+  if (!(email && password)) {
+    return res
+      .status(404)
+      .json({ error: "Se requiere todos los campos llenos" });
+  }
+
+  const user = await Usuario.findByEmail(email);
+
+  if (user && user.password == password) {
+    const token = jwt.sign({ id: user._id }, jwt_secret, {
+      expiresIn: "120d",
+    });
+    const cookieOptions = {
+      expires: new Date(Date.now() + 86400000), // Cookie expira en un dia
+      httpOnly: true,
+    };
+    res.cookie(`jwt`, token, cookieOptions);
+    // res.status(200).json({token,data:{user}})
+    res.redirect("/");
+  } else {
+    return res.status(400).json({ error: "usuario no encontrado" });
+  }
+};
+
 exports.postLogout = async (req, res, next) => {
-    // console.log('getout')
-    res.cookie(`jwt`, `loggedout`, {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true,
-      });
-    //   res.status(200).json({ status: `success` });
-      res.redirect('/')
-}
+  // console.log('getout')
+  res.cookie(`jwt`, `loggedout`, {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  //   res.status(200).json({ status: `success` });
+  res.redirect("/");
+};
+
 exports.postSignup = async (req, res, next) => {
-    const {nombres,apellidos,email,password,password2}=req.body;
-    if (!(nombres && apellidos && email && password && password2)) {
-        return res.status(404).json({ error: "Se requiere todos los campos llenos" });
-    }
-    if(password!=password2){
-        return res.status(404).json({ error: "Se requiere que las contraseñas sean iguales" });
-    }
-    const new_user = new Usuario(null,nombres, apellidos, email, password, 0);
-    new_user.save()
-    res.redirect('/')
-}
+  console.log("[controllers/usuario.js > postSignup]");
+  const { nombres, apellidos, email, password, password2 } = req.body;
+  if (!(nombres && apellidos && email && password && password2)) {
+    return res
+      .status(404)
+      .json({ error: "Se requiere todos los campos llenos" });
+  }
+  if (password != password2) {
+    return res
+      .status(404)
+      .json({ error: "Se requiere que las contraseñas sean iguales" });
+  }
+  const new_user = new Usuario(null, nombres, apellidos, email, password, 0);
+  new_user.save();
+  res.redirect("/");
+};

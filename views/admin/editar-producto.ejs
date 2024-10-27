@@ -17,7 +17,7 @@
                 <!-- URL de la imagen -->
                  <div class="input-form">
                      <label for="urlImagen">URL de la imagen</label>
-                     <input type="text" id="urlImagen" name="urlImagen" value="<% if (modoEdicion) { %><%= producto.urlimagen %><% } %>">
+                     <input type="text" id="urlImagen" name="urlImagen" value="<% if (modoEdicion) { %><%= producto.urlImagen %><% } %>">
                  </div>
     
                 <!-- Precio del producto -->
@@ -44,7 +44,7 @@
                      <label for="categoria">Categoría</label>
                      <select id="categoria" name="categoria">
                         <% for (let c of categorias) { %>
-                            <option value="<%=c.id%>" <% if (modoEdicion && +producto.categoria_id === c.id) { %>selected<% } %>><%= c.categoria %></option>
+                            <option value="<%=c._id%>" <% if (modoEdicion && +producto.categoria_id === c._id) { %>selected<% } %>><%= c.categoria %></option>
                         <% } %>
                        
                      </select>
@@ -52,7 +52,7 @@
     
                 <!-- ID del producto oculto si está en modo edición -->
                 <% if (modoEdicion) { %>
-                    <input type="hidden" value="<%= producto.id %>" name="idProducto">
+                    <input type="hidden" value="<%= producto._id %>" name="idProducto">
                 <% } %>
     
                 <!-- Botón de submit -->
@@ -64,7 +64,7 @@
         <aside>
             <!-- Vista previa de la imagen -->
             <div class="image-preview">
-                <img id="previewImage" src="<% if (modoEdicion) { %><%= producto.urlimagen %><% } else { %>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVNer1ZryNxWVXojlY9Hoyy1-4DVNAmn7lrg&s<% } %>" alt="Vista previa" />
+                <img id="previewImage" src="<% if (modoEdicion) { %><%= producto.urlImagen %><% } else { %>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVNer1ZryNxWVXojlY9Hoyy1-4DVNAmn7lrg&s<% } %>" alt="Vista previa" />
             </div>
         </aside>
     </main>
