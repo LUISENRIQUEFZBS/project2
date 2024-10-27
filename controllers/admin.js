@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Producto = require("../models/producto");
 
 exports.getCrearProducto = async (req, res, next) => {
@@ -44,7 +45,12 @@ exports.postCrearProducto = async (req, res, next) => {
 
 exports.getProductos = async (req, res, next) => {
   try {
-    let productos = await Producto.fetchAll();
+    const categorias = await Producto.getCategorias();
+    const productos = await Producto.fetchAll();
+    productos.forEach(producto => {
+      producto.categoria = categorias.find(x => x._id.toString() == producto.categoria_id.toString()).categoria;
+    })
+
     res.render("admin/productos", {
       prods: productos,
       titulo: "Administracion de Productos",
@@ -89,7 +95,7 @@ exports.postEditProductos = async (req, res, next) => {
     precio: Number(req.body.precio),
     descripcion: req.body.descripcion,
     urlImagen: req.body.urlImagen,
-    categoria: req.body.categoria,
+    categoria_id: new ObjectId(req.body.categoria),
     caracteristicas:
       req.body.caracteristicas != ""
         ? req.body.caracteristicas.split(",")

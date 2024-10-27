@@ -9,27 +9,27 @@
                 </a>
             </li>            
             <li class="main-header__item box-center_flex">
-                <a  href="/mobile">
+                <a  href="/categoria/mobile">
                     mobile
                 </a>
             </li>
             <li class="main-header__item box-center_flex">
-                <a href="/tv_audio">
+                <a href="/categoria/tv_audio">
                     TV & Audio
                 </a>
             </li>
             <li class="main-header__item box-center_flex">
-                <a href="/electrodomesticos">
+                <a href="/categoria/electrodomesticos">
                     Electrodomésticos
                 </a>
             </li>
             <li class="main-header__item box-center_flex">
-                <a  href="/tecnologia_ai">
+                <a  href="/categoria/tecnologia_ai">
                     Tecnología AI
                 </a>
             </li>
             <li class="main-header__item box-center_flex">
-                <a  href="/ventas_especiales">
+                <a  href="/categoria/ventas_especiales">
                     Ventas especiales
                 </a>
             </li>
@@ -55,11 +55,18 @@
                     </a>
                 </li>
             <% } %>
-            <li class="main-header__item box-center_flex">
-                <a href="/carrito">
-                <i class="fa-solid fa-cart-shopping"></i>
-                </a>
-            </li>
+            <% if (typeof user == 'object' && user){ %>
+                <li class="main-header__item box-center_flex">
+                    <a href="/carrito">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </li>
+                <li class="main-header__item box-center_flex">
+                    <a href="/pedidos">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </a>
+                </li>
+            <% }%>
             <li class="main-header__item box-center_flex">
                 <a><i class="fa-solid fa-magnifying-glass"></i></a>
             </li>

@@ -42,9 +42,10 @@ class Producto {
     let result = [];
     if (ruta) {
       const categoria = await categoriasCollection.findOne({ ruta: ruta });
-      result = productosCollection
+    
+      result = categoria ? productosCollection
         .find({ categoria_id: categoria._id })
-        .toArray();
+        .toArray() : null;
     } else {
       result = await productosCollection.find().toArray();
     }
