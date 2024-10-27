@@ -9,6 +9,6 @@ router.post('/carrito', usuarioController.isLoggedIn, productosController.postCa
 router.post('/eliminar-producto-carrito', usuarioController.isLoggedIn, productosController.postEliminarProductoCarrito);
 router.get('/:categoria_ruta?', usuarioController.isLoggedIn, productosController.getProductos);
 
-router.get('/productos/:idProducto', productosController.getProducto);
+router.get('/productos/:idProducto', usuarioController.isLoggedIn, productosController.getProducto);
 
 module.exports = router;

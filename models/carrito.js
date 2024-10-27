@@ -1,7 +1,7 @@
 const Usuario = require("./usuario");
 
 module.exports = class Carrito {
-  static async agregarProducto(userId, productId, precio, nombreproducto) {
+  static async agregarProducto(userId, productId, precio, nombreproducto, cantidad) {
     console.log("[models/carrito.js > agregarProducto]");
 
     const usuario = await Usuario.findById(userId);
@@ -18,7 +18,7 @@ module.exports = class Carrito {
         _id: productId,
         precio: precio,
         nombreproducto: nombreproducto,
-        cantidad: 1,
+        cantidad: cantidad,
       });
     }
 

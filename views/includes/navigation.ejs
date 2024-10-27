@@ -55,11 +55,13 @@
                     </a>
                 </li>
             <% } %>
-            <li class="main-header__item box-center_flex">
-                <a href="/carrito">
-                <i class="fa-solid fa-cart-shopping"></i>
-                </a>
-            </li>
+            <% if (typeof user == 'object' && user){ %>
+                <li class="main-header__item box-center_flex">
+                    <a href="/carrito">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </li>
+            <% }%>
             <li class="main-header__item box-center_flex">
                 <a><i class="fa-solid fa-magnifying-glass"></i></a>
             </li>

@@ -53,11 +53,13 @@ exports.postCarrito = async (req, res) => {
   const user = res.locals.user;
   const idProducto = req.body.idProducto;
   const producto = await Producto.findById(idProducto);
+  const cantidad = Number(req.body.quantity);
   await Carrito.agregarProducto(
     user._id,
     producto._id,
     producto.precio,
-    producto.nombreproducto
+    producto.nombreproducto,
+    cantidad
   );
   res.redirect("/carrito");
 };

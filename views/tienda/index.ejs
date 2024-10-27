@@ -25,7 +25,9 @@
                         </div>
                         <div class="card__actions">
                             <a href="/productos/<%= producto._id %>" class="btn"> Detalles</a>
-                            <%- include('../includes/agregar-al-carrito.ejs', {producto: producto}) %>
+                            <% if (typeof user == 'object' && user){ %>
+                                <%- include('../includes/agregar-al-carrito.ejs', {producto: producto}) %>
+                            <% }%>
                         </div>
                     </article>
                 <% } %>
