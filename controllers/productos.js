@@ -2,9 +2,13 @@ const Producto = require("../models/producto");
 const Carrito = require("../models/carrito");
 
 exports.getProductos = async (req, res) => {
+  const categorias = await Producto.getCategorias();
   const categoria_ruta = req.params.categoria_ruta; // Obtener la categoría desde los parámetros de la ruta
   const productos = await Producto.fetchAll(categoria_ruta);
   const titulo = "Página principal de la Tienda";
+  productos.forEach(producto => {
+    producto.categoria = categorias.find(x => x._id.toString() == producto.categoria_id.toString()).categoria;
+  })
   res.render("tienda/index", {
     prods: productos,
     titulo: titulo,

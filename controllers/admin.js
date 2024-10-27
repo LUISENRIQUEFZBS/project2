@@ -44,7 +44,12 @@ exports.postCrearProducto = async (req, res, next) => {
 
 exports.getProductos = async (req, res, next) => {
   try {
-    let productos = await Producto.fetchAll();
+    const categorias = await Producto.getCategorias();
+    const productos = await Producto.fetchAll();
+    productos.forEach(producto => {
+      producto.categoria = categorias.find(x => x._id.toString() == producto.categoria_id.toString()).categoria;
+    })
+
     res.render("admin/productos", {
       prods: productos,
       titulo: "Administracion de Productos",
