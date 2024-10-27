@@ -1,16 +1,7 @@
-const mysql = require('mysql2');
-
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'nodejs',
-    password: '12345678'
-});
-
 const { MongoClient } = require("mongodb");
 
 // Replace the uri string with your connection string.
-const uri = process.env.DB_URI;
+const uri = 'mongodb+srv://santaaparicioc:Incorrect@cluster0.9o6gj.mongodb.net/';
 
 const client = new MongoClient(uri);
 const database = client.db('samsung');
