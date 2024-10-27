@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --env-file=.env.example app.js",
-    "start-server": "node --env-file=.env.example app.js"
+    "start": "node --env-file=.env.example app.js"
   },
   "author": "Juan Cabello",
   "license": "ISC",
