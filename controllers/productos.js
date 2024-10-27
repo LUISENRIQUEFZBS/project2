@@ -1,5 +1,7 @@
 const Producto = require("../models/producto");
 const Carrito = require("../models/carrito");
+const Pedido = require("../models/pedido");
+const Usuario = require("../models/usuario");
 
 exports.getProductos = async (req, res) => {
   const categorias = await Producto.getCategorias();
@@ -14,6 +16,7 @@ exports.getProductos = async (req, res) => {
     titulo: titulo,
     path: `/${categoria_ruta || ""}`,
   });
+
 };
 
 exports.getCarrito = async (req, res, next) => {
@@ -82,3 +85,33 @@ exports.getProducto = (req, res) => {
     });
   });
 };
+
+exports.getPedidos = async(req, res, next) => {
+
+  const userId = res.locals.user._id;
+  const userPedidos = await Pedido.fetchAll(userId);
+
+  try {
+    res.render('tienda/pedidos', {
+        path: '/pedidos',
+        titulo: 'Mis Pedidos',
+        pedidos: userPedidos
+    });
+  }
+  catch { console.log(err) } 
+};
+
+exports.postPedido = async (req, res, next) => {
+  const userId = res.locals.user._id;
+  const carrito = await Carrito.getCarrito(userId);
+
+  const pedido = new Pedido(null, userId, carrito)
+  
+  try {
+    await pedido.save();
+    await Usuario.updateCarrito(userId, null)
+    res.redirect('/pedidos');
+  } catch (error) {
+    console.log(error);
+  }
+}; 

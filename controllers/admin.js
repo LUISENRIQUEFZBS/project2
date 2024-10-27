@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Producto = require("../models/producto");
 
 exports.getCrearProducto = async (req, res, next) => {
@@ -94,7 +95,7 @@ exports.postEditProductos = async (req, res, next) => {
     precio: Number(req.body.precio),
     descripcion: req.body.descripcion,
     urlImagen: req.body.urlImagen,
-    categoria: req.body.categoria,
+    categoria_id: new ObjectId(req.body.categoria),
     caracteristicas:
       req.body.caracteristicas != ""
         ? req.body.caracteristicas.split(",")
