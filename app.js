@@ -8,23 +8,11 @@ const bodyParser = require('body-parser')
 
 // cookieParser
 const cookieParser= require('cookie-parser')
-// from class
 
 //from project
 const usuarioRouter = require('./routes/usuario')
 const ecommerceRouter = require('./routes/ecommerce')
 const adminRouter = require('./routes/admin');
-
-// const db = require('./utils/database')
-
-// db.execute('SELECT * FROM usuarios')
-//     .then(resultado => {
-//         // console.log(resultado);
-//         console.log(resultado[0]);
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     })
 
 const app = express();
 

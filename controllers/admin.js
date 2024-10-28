@@ -63,7 +63,6 @@ exports.getProductos = async (req, res, next) => {
 
 // Controlador para obtener el producto a editar
 exports.getEditProductos = async (req, res, next) => {
-  console.log("[controllers/admin.js > getEditProductos]");
 
   try {
     const categorias = await Producto.getCategorias();

@@ -20,7 +20,7 @@ exports.getProductos = async (req, res) => {
 };
 
 exports.getCarrito = async (req, res, next) => {
-  console.log("[controllers/productos.js > getCarrito]");
+  
   const user = res.locals.user;
   const userId = user._id;
 
@@ -52,7 +52,7 @@ exports.getCarrito = async (req, res, next) => {
 };
 
 exports.postCarrito = async (req, res) => {
-  console.log("[controllers/productos.js > postCarrito]");
+  
   const user = res.locals.user;
   const idProducto = req.body.idProducto;
   const producto = await Producto.findById(idProducto);
@@ -68,7 +68,7 @@ exports.postCarrito = async (req, res) => {
 };
 
 exports.postEliminarProductoCarrito = async (req, res) => {
-  console.log("[controllers/productos.js > postEliminarProductoCarrito]");
+  
   const user = res.locals.user;
   const idProducto = req.body.idProducto;
   await Carrito.eliminarProducto(user._id, idProducto);
