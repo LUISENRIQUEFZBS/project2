@@ -17,7 +17,6 @@ exports.getSignup = async (req, res, next) => {
 };
 
 exports.isLoggedIn = async (req, res, next) => {
-  console.log("[controllers/usuario.js > isLoggedIn]");
   if (req.cookies.jwt) {
     try {
       const token = req.cookies.jwt;
@@ -37,7 +36,6 @@ exports.isLoggedIn = async (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-  console.log("[controllers/usuario.js > postLogin]");
   const { email, password } = req.body;
   if (!(email && password)) {
     return res
@@ -56,7 +54,6 @@ exports.postLogin = async (req, res, next) => {
       httpOnly: true,
     };
     res.cookie(`jwt`, token, cookieOptions);
-    // res.status(200).json({token,data:{user}})
     res.redirect("/");
   } else {
     return res.status(400).json({ error: "usuario no encontrado" });
@@ -64,17 +61,14 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postLogout = async (req, res, next) => {
-  // console.log('getout')
   res.cookie(`jwt`, `loggedout`, {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  //   res.status(200).json({ status: `success` });
   res.redirect("/");
 };
 
 exports.postSignup = async (req, res, next) => {
-  console.log("[controllers/usuario.js > postSignup]");
   const { nombres, apellidos, email, password, password2 } = req.body;
   if (!(nombres && apellidos && email && password && password2)) {
     return res

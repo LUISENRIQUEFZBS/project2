@@ -21,7 +21,6 @@ label {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    /* border-style: groove; */
 }
 
 #page-title {
@@ -50,7 +49,6 @@ label {
     padding: 10px 20px;
     letter-spacing: 2.4px;
     border-radius: 100px;
-    /*width: 100% !important;*/
     cursor: pointer;
 }
 

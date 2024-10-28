@@ -16,4 +16,3 @@ router.get('/login',usuarioController.getLogin);
 router.get('/signup', usuarioController.getSignup);
 
 module.exports = router;
-// exports.usuarios = usuarios;

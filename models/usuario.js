@@ -14,7 +14,6 @@ module.exports = class Usuario {
   }
 
   async save() {
-    console.log("[models/usuario.js > save]");
     const result = await usuarios.insertOne({
       nombres: this.nombres,
       apellidos: this.apellidos,
@@ -26,7 +25,6 @@ module.exports = class Usuario {
   }
 
   static async updateCarrito(userId, carrito) {
-    console.log("[models/usuario.js > updateCarrito]");
     const result = await usuarios.updateOne(
       { _id: userId },
       { $set: { carrito: carrito } }
@@ -35,13 +33,11 @@ module.exports = class Usuario {
   }
 
   static async findById(id) {
-    console.log("[models/usuario.js > findById]");
     const user = await usuarios.findOne({ _id: new ObjectId(id) });
     return user;
   }
 
   static async findByEmail(email) {
-    console.log("[models/usuario.js > findByEmail]");
     const user = await usuarios.findOne({ email: email });
     return user;
   }

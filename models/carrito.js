@@ -2,7 +2,6 @@ const Usuario = require("./usuario");
 
 module.exports = class Carrito {
   static async agregarProducto(userId, productId, precio, nombreproducto, cantidad) {
-    console.log("[models/carrito.js > agregarProducto]");
 
     const usuario = await Usuario.findById(userId);
     const carrito = usuario.carrito || [];
@@ -27,7 +26,6 @@ module.exports = class Carrito {
   }
 
   static async eliminarProducto(userId, productId) {
-    console.log("[models/carrito.js > eliminarProducto]");
 
     const usuario = await Usuario.findById(userId);
     const carrito = usuario.carrito || [];

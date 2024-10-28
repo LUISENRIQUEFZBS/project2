@@ -25,7 +25,6 @@ class Producto {
   }
 
   async save() {
-    console.log("[models/producto.js > save]");
     const producto = {
       nombreproducto: this.nombreproducto,
       urlImagen: this.urlImagen,
@@ -38,7 +37,6 @@ class Producto {
   }
 
   static async fetchAll(ruta) {
-    console.log("[models/producto.js > fetchAll]");
     let result = [];
     if (ruta) {
       const categoria = await categoriasCollection.findOne({ ruta: ruta });
@@ -80,7 +78,6 @@ class Producto {
   }
 
   static async deleteById(id) {
-    console.log("[models/producto.js > deleteById]");
     const result = await productosCollection.deleteOne({
       _id: new ObjectId(id),
     });
